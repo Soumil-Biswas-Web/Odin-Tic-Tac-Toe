@@ -173,16 +173,18 @@ const Game = (() =>  {
             console.log(currentPlayer.name + "'s turn!");
             let turnCoords = prompt("Enter row and column of tile for " + currentPlayer.name + " Mark: " + currentPlayer.mark).split(" ");
             gameArray[turnCoords[0]-1][turnCoords[1]-1] = currentPlayer.mark;   //takes given co-ordinates, and places the player's mark on the tile
-            winner = checkWin(gameArray);
-            if (winner != null){
-                return;
-            }        
+            winner = checkWin(gameArray);   
         }      
 
         while (winner === null){
-            players.forEach((currentPlayer) => {
+            for (let i in players) {
                 console.log(gameArray);
-                gameTurn(currentPlayer, gameArray)});
+                let currentPlayer = players[i];
+                gameTurn(currentPlayer, gameArray);
+                if (winner != null){
+                    break;
+                }                                    
+            }
         }
         console.log(winner + " wins!");        
     }
