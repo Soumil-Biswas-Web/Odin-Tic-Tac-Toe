@@ -145,7 +145,7 @@ const Game = (() =>  {
                         console.log("match detected at diagonal: 1");
                         return win;
                     }
-                    
+
                     win = true;        
                     for(let i=0; i<len; i++){
                         j = (len - 1) - i;
@@ -164,7 +164,7 @@ const Game = (() =>  {
                 }
     
                 if(checkRow(len, currentPlayer) || checkCol(len, currentPlayer) || checkDiag(len, currentPlayer)){
-                    winner = currentPlayer;
+                    winner = currentPlayer.name;
                     return winner;
                 }
                 else return null;      
