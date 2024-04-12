@@ -92,14 +92,15 @@ const Game = (() =>  {
                 len = gameArray.length;
         
                 const checkRow = (len, currentPlayer) => {
-                    win = true;
                     for(let i=0; i<len; i++){
+                        win = true;
                         for(let j=0; j<len; j++){
                             if (gameArray[i][j] != currentPlayer.mark){
-                                console.log("mark undetected at gameArray[" + i + "][" + j + "]");
+                                //console.log("mark undetected at gameArray[" + i + "][" + j + "]");
                                 win = false;
-                                continue
+                                continue;
                             }
+                            else console.log("mark detected at gameArray[" + i + "][" + j + "]");                            
                         }
         
                         if (win === true) {
@@ -111,14 +112,15 @@ const Game = (() =>  {
                 }
         
                 const checkCol = (len, currentPlayer) => {
-                    win = true;
                     for(let i=0; i<len; i++){
+                        win = true;
                         for(let j=0; j<len; j++){
                             if (gameArray[j][i] != currentPlayer.mark){
-                                console.log("mark undetected at gameArray[" + i + "][" + j + "]");
+                                //console.log("mark undetected at gameArray[" + i + "][" + j + "]");
                                 win = false;
-                                continue
+                                continue;
                             }
+                            else console.log("mark detected at gameArray[" + j + "][" + i + "]");                            
                         }
         
                         if (win === true) {
@@ -133,27 +135,30 @@ const Game = (() =>  {
                     win = true;
                     for(let i=0; i<len; i++){
                         if (gameArray[i][i] != currentPlayer.mark){
-                            console.log("mark undetected at gameArray[" + i + "][" + i + "]");
+                            //console.log("mark undetected at gameArray[" + i + "][" + i + "]");
                             win = false;
-                            continue
                         }
-                        if (win === true) {
-                            console.log("match detected at diagonal: 1");
-                            return win;
-                        }
+                        else console.log("mark detected at gameArray[" + i + "][" + j + "]");                        
                     }
-        
+
+                    if (win === true) {
+                        console.log("match detected at diagonal: 1");
+                        return win;
+                    }
+                    
+                    win = true;        
                     for(let i=0; i<len; i++){
                         j = (len - 1) - i;
                         if (gameArray[i][j] != currentPlayer.mark){
                             console.log("mark undetected at gameArray[" + i + "][" + j + "]");
                             win = false;
-                            continue
                         }
-                        if (win === true) {
-                            console.log("match detected at diagonal: 2");
-                            return win;
-                        }
+                        else console.log("mark detected at gameArray[" + i + "][" + j + "]");                        
+                    }
+
+                    if (win === true) {
+                        console.log("match detected at diagonal: 2");
+                        return win;
                     }
                     return win;            
                 }
@@ -161,7 +166,8 @@ const Game = (() =>  {
                 if(checkRow(len, currentPlayer) || checkCol(len, currentPlayer) || checkDiag(len, currentPlayer)){
                     winner = currentPlayer;
                     return winner;
-                }          
+                }
+                else return null;      
             }  
 
             console.log(currentPlayer.name + "'s turn!");
@@ -174,8 +180,8 @@ const Game = (() =>  {
         }      
 
         while (winner === null){
-            console.log(gameArray);
             players.forEach((currentPlayer) => {
+                console.log(gameArray);
                 gameTurn(currentPlayer, gameArray)});
         }
         console.log(winner + " wins!");        
