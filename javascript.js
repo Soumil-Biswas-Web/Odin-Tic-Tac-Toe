@@ -61,25 +61,127 @@ function constructNewGame() {
     gameFlow;
 }
 
-const Game = (function() {
+const Game = (() =>  {
     const constructNewGame = () => {
-        let gameArray = new Array(9);
+        const constructNewBoard = () => {
+            let board = [
+                [0,0,0],
+                [0,0,0],
+                [0,0,0]
+            ];
+
+            return board;
+        }
+
+        const player = (name, mark) => {
+            return {name, mark}
+        };
+
+        let gameArray = constructNewBoard();
         const player1 = player("Player1", "X");
         const player2 = player("Player2", "O");
-
+        
         gameFlow(gameArray, player1, player2);
     }
-    
-    const player = (name, mark) => {
-        return {name, mark}
-    };
 
     const gameFlow = (gameArray, player1, player2) => {
-        let currentPlayer = player1;
-        console.log(currentPlayer.name + "'s turn!");
+        let players = [player1, player2], winner = null;
+
+        const gameTurn = (currentPlayer, gameArray) => {
+            const checkWin = (gameArray) => {
+                len = gameArray.length;
+        
+                const checkRow = (len, currentPlayer) => {
+                    win = true;
+                    for(let i=0; i<len; i++){
+                        for(let j=0; j<len; j++){
+                            if (gameArray[i][j] != currentPlayer.mark){
+                                console.log("mark undetected at gameArray[" + i + "][" + j + "]");
+                                win = false;
+                                continue
+                            }
+                        }
+        
+                        if (win === true) {
+                            console.log("match detected at row:" + i);
+                            return win;
+                        }
+                    }
+                    return win;
+                }
+        
+                const checkCol = (len, currentPlayer) => {
+                    win = true;
+                    for(let i=0; i<len; i++){
+                        for(let j=0; j<len; j++){
+                            if (gameArray[j][i] != currentPlayer.mark){
+                                console.log("mark undetected at gameArray[" + i + "][" + j + "]");
+                                win = false;
+                                continue
+                            }
+                        }
+        
+                        if (win === true) {
+                            console.log("match detected at column:" + i);
+                            return win;
+                        }
+                    }
+                    return win;            
+                }
+                
+                const checkDiag = (len, currentPlayer) => {
+                    win = true;
+                    for(let i=0; i<len; i++){
+                        if (gameArray[i][i] != currentPlayer.mark){
+                            console.log("mark undetected at gameArray[" + i + "][" + i + "]");
+                            win = false;
+                            continue
+                        }
+                        if (win === true) {
+                            console.log("match detected at diagonal: 1");
+                            return win;
+                        }
+                    }
+        
+                    for(let i=0; i<len; i++){
+                        j = (len - 1) - i;
+                        if (gameArray[i][j] != currentPlayer.mark){
+                            console.log("mark undetected at gameArray[" + i + "][" + j + "]");
+                            win = false;
+                            continue
+                        }
+                        if (win === true) {
+                            console.log("match detected at diagonal: 2");
+                            return win;
+                        }
+                    }
+                    return win;            
+                }
+    
+                if(checkRow(len, currentPlayer) || checkCol(len, currentPlayer) || checkDiag(len, currentPlayer)){
+                    winner = currentPlayer;
+                    return winner;
+                }          
+            }  
+
+            console.log(currentPlayer.name + "'s turn!");
+            let turnCoords = prompt("Enter row and column of tile for " + currentPlayer.name + " Mark: " + currentPlayer.mark).split(" ");
+            gameArray[turnCoords[0]-1][turnCoords[1]-1] = currentPlayer.mark;   //takes given co-ordinates, and places the player's mark on the tile
+            winner = checkWin(gameArray);
+            if (winner != null){
+                return;
+            }        
+        }      
+
+        while (winner === null){
+            console.log(gameArray);
+            players.forEach((currentPlayer) => {
+                gameTurn(currentPlayer, gameArray)});
+        }
+        console.log(winner + " wins!");        
     }
 
-    return {constructNewGame, player};
+    return {constructNewGame};
 })();
 
 // Driver Code
