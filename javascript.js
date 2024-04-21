@@ -7,11 +7,11 @@ const Game = (() =>  {
                     const box = document.createElement("div");
                     box.setAttribute("class", "box");
                     box.setAttribute("id", String(i));
-                    //setBoxProperties(box);
+                    setBoxProperties(box);
                     return box;
                 }
                 
-                const setBoxProperties = (box, currentPlayer) => {
+                const setBoxProperties = (box) => {
                     // Handles button logic for boxes
 
                     const setMark = (mark) => {
@@ -33,6 +33,7 @@ const Game = (() =>  {
                         boxImage.setAttribute("style", "filter: invert(1); width: 100%");
                     }
 
+                    //Checks win conditions
                     const checkWin = (gameArray) => {
                         len = gameArray.length;
                 
@@ -95,7 +96,7 @@ const Game = (() =>  {
                             for(let i=0; i<len; i++){
                                 j = (len - 1) - i;
                                 if (gameArray[i][j] != currentPlayer.mark){
-                                    console.log("mark undetected at gameArray[" + i + "][" + j + "]");
+                                    //console.log("mark undetected at gameArray[" + i + "][" + j + "]");
                                     win = false;
                                 }
                                 else console.log("mark detected at gameArray[" + i + "][" + j + "]");                        
@@ -115,18 +116,27 @@ const Game = (() =>  {
                         else return null;      
                     }                      
                     
-                    box.addEventListener("click", () => {
-                        let coords = Number(box.id);
-                        board.gameArray[Number(coords%3)][Math.ceil(coords/3)] = currentPlayer.mark;
-                        console.log(board);
+                    box.addEventListener("click", turn = () => {
+                        setMark(currentPlayer.mark); // sets the mark in the visible Game grid
+                        let boxNumber = Number(box.id); // find Which box was marked
+                        let coords = [Math.floor(boxNumber/3), Math.ceil(boxNumber%3)];   // Conver box Number to X and Y coordinates
+                        // insert mark in Gmae Array
+                        board.gameArray[coords[0]][coords[1]] = currentPlayer.mark;     // Put correct mark in Game Array
+                        console.log(board.gameArray);
                         winner = checkWin(gameArray);
+                        // Handle next turn or End of Game
+                        console.log(winner)
                         if (winner != null) {
-                            deactivateBoard();
+                            box.removeEventListener("click", turn);
                             console.log(winner + " wins!"); 
+
+                            const body = document.querySelector("body");
+                            const winnerDiv = document.createTextNode(winner + " wins!");;
+                            body.appendChild(winnerDiv);
                         }
                         else {
                             currentPlayer = (currentPlayer === player1) ? player2 : player1;
-                            activateBoard(currentPlayer, board);
+                            console.log(currentPlayer)
                         }
                     });
 
@@ -164,14 +174,6 @@ const Game = (() =>  {
             return {gameArray, newGameBoard};
         }
 
-        const activateBoard = (currentPlayer, board) => {
-            const boxes = document.querySelectorAll(".box");
-            boxes.forEach(function(box) {
-                const boxProperties = board.newGameBoard.setBoxProperties(box, currentPlayer);
-                boxProperties.setMark(currentPlayer.mark);
-            });
-        }
-
         const player = (name, mark) => {
             const playerProfile = document.createElement("img");
             if (mark === "O") {
@@ -185,12 +187,11 @@ const Game = (() =>  {
 
         const player1 = player("Player1", "X");
         const player2 = player("Player2", "O");
-        let board = constructNewBoard();
         winner = null;
-
+        
         let currentPlayer = player1;
-        console.log(currentPlayer.name + "'s turn!");
-        activateBoard(currentPlayer, board);   
+        console.log(currentPlayer.name + "'s turn!");   
+        let board = constructNewBoard();
     }
 
     return {constructNewGame};
