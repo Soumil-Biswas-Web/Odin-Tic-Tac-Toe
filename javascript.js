@@ -30,7 +30,7 @@ const Game = (() =>  {
                         else if (mark === "X") {
                             boxImage.setAttribute("src", "Images/DarkVerse130xWhite.webp");
                         }
-                        boxImage.setAttribute("style", "filter: invert(1); width: 100%");
+                        boxImage.setAttribute("style", "filter: invert(1); height: 100%");
                     }
 
                     //Checks win conditions
@@ -129,14 +129,17 @@ const Game = (() =>  {
                         if (winner != null) {
                             box.removeEventListener("click", turn);
                             console.log(winner + " wins!"); 
-
+                            // Show winning text
                             const body = document.querySelector("body");
-                            const winnerDiv = document.createTextNode(winner + " wins!");;
+                            const winnerDiv = document.createElement("div");
+                            winnerDiv.setAttribute("class", "winnerText")
+                            const wintext = document.createTextNode(winner + " wins!");
+                            winnerDiv.appendChild(wintext);
                             body.appendChild(winnerDiv);
                         }
                         else {
                             currentPlayer = (currentPlayer === player1) ? player2 : player1;
-                            console.log(currentPlayer)
+                            showBanner(currentPlayer, board.banner);
                         }
                     });
 
@@ -163,15 +166,12 @@ const Game = (() =>  {
             const gamePanel = document.querySelector(".game_panel");
             gamePanel.setAttribute("style", "display: flex");
 
-            const banner = document.createElement("div");
-            banner.setAttribute("id", "banner");
-            gamePanel.appendChild(banner);
             gamePanel.appendChild(player1.playerProfile);
             const newGameBoard = gameBoard("currentboad");
             gamePanel.appendChild(newGameBoard.gameBoard);
             gamePanel.appendChild(player2.playerProfile);
 
-            return {gameArray, newGameBoard};
+            return {gameArray, newGameBoard, banner};
         }
 
         const player = (name, mark) => {
@@ -185,13 +185,21 @@ const Game = (() =>  {
             return {name, mark, playerProfile};            
         };
 
+        const showBanner = (currentPlayer, banner) => {
+            console.log(currentPlayer.name + "'s turn!"); 
+            if (banner.innerHTML != null) banner.innerHTML = '';
+            let bannerText = document.createTextNode(currentPlayer.name + "'s turn!");
+            banner.appendChild(bannerText);
+        }
+        
+        const banner = document.querySelector("#banner");
         const player1 = player("Player1", "X");
         const player2 = player("Player2", "O");
         winner = null;
         
-        let currentPlayer = player1;
-        console.log(currentPlayer.name + "'s turn!");   
+        let currentPlayer = player1;  
         let board = constructNewBoard();
+        showBanner(currentPlayer, board.banner);
     }
 
     return {constructNewGame};
@@ -201,3 +209,4 @@ const Game = (() =>  {
 
 const newGame = document.querySelector(".new_game");
 newGame.addEventListener("click", Game.constructNewGame);
+
