@@ -1,4 +1,4 @@
-# Odin-Tic-Tac_toe
+# Odin-Tic-Tac-Toe
 Project Submission for the Javascript Course in the Odin Project
 
 Open the Website using the link https://soumil-biswas-web.github.io/Odin-Tic-Tac-Toe
