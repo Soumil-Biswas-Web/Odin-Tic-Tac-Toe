@@ -146,7 +146,7 @@ const Game = (() =>  {
                     return {setMark};
                 }
 
-                // Makes new Gameboards
+                // Makes new Gameboards                
                 const gameBoard = document.createElement("div");
                 gameBoard.setAttribute("id", "game_board");
                 for(let i=0; i<9; i++){
@@ -163,13 +163,19 @@ const Game = (() =>  {
             ];  // Array of squares in game board
 
             // Creates a pnael with the Board and two players in it
-            const gamePanel = document.querySelector(".game_panel");
+            let gamePanel = document.querySelector(".game_panel");
+            if (gamePanel) {
+                body.removeChild(gamePanel);
+            }
+            gamePanel = document.createElement("div");
+            gamePanel.setAttribute('class', 'game_panel');
             gamePanel.setAttribute("style", "display: flex");
 
             gamePanel.appendChild(player1.playerProfile);
             const newGameBoard = gameBoard("currentboad");
             gamePanel.appendChild(newGameBoard.gameBoard);
             gamePanel.appendChild(player2.playerProfile);
+            body.appendChild(gamePanel);
 
             return {gameArray, newGameBoard, banner};
         }
@@ -206,6 +212,8 @@ const Game = (() =>  {
 })();
 
 // Driver Code
+
+const body = document.querySelector("body");
 
 const newGame = document.querySelector(".new_game");
 newGame.addEventListener("click", Game.constructNewGame);
