@@ -30,7 +30,8 @@ const Game = (() =>  {
                         else if (mark === "X") {
                             boxImage.setAttribute("src", "Images/DarkVerse130xWhite.webp");
                         }
-                        boxImage.setAttribute("style", "filter: invert(1); height: 100%");
+                        // boxImage.setAttribute("style", "filter: invert(1); height: 100%");
+                        boxImage.setAttribute("style", "height: 100%");
                     }
 
                     //Checks win conditions
