@@ -180,6 +180,7 @@ const Game = (() =>  {
             return {gameArray, newGameBoard, banner};
         }
 
+        // Set player images on both sides
         const player = (name, mark) => {
             const playerProfile = document.createElement("img");
             if (mark === "O") {
@@ -188,14 +189,25 @@ const Game = (() =>  {
             else if (mark === "X") {
                 playerProfile.setAttribute("src", "Images/DarkVerseModx256.webp");
             }
+            playerProfile.setAttribute("id", name);
             return {name, mark, playerProfile};            
         };
 
+        // Show who's turn it currently is
         const showBanner = (currentPlayer, banner) => {
             console.log(currentPlayer.name + "'s turn!"); 
             if (banner.innerHTML != null) banner.innerHTML = '';
             let bannerText = document.createTextNode(currentPlayer.name + "'s turn!");
             banner.appendChild(bannerText);
+
+            if (currentPlayer.name === "Player1") {
+                document.querySelector("#Player1").style.filter = "drop-shadow(0 0 0.75rem aqua)";
+                document.querySelector("#Player2").style.filter = "";
+            }
+            else {
+                document.querySelector("#Player1").style.filter = "";
+                document.querySelector("#Player2").style.filter = "drop-shadow(0 0 0.75rem aqua)";
+            }
         }
         
         const banner = document.querySelector("#banner");
