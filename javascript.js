@@ -35,7 +35,7 @@ const Game = (() =>  {
 
                     //Checks win conditions
                     const checkWin = (gameArray) => {
-                        len = gameArray.length;
+                        let len = gameArray.length;
                 
                         const checkRow = (len, currentPlayer) => {
                             for(let i=0; i<len; i++){
@@ -117,6 +117,7 @@ const Game = (() =>  {
                     }                      
                     
                     box.addEventListener("click", turn = () => {
+                        if (winner != null) return
                         setMark(currentPlayer.mark); // sets the mark in the visible Game grid
                         let boxNumber = Number(box.id); // find Which box was marked
                         let coords = [Math.floor(boxNumber/3), Math.ceil(boxNumber%3)];   // Conver box Number to X and Y coordinates
@@ -130,7 +131,6 @@ const Game = (() =>  {
                             box.removeEventListener("click", turn);
                             console.log(winner + " wins!"); 
                             // Show winning text
-                            const body = document.querySelector("body");
                             const winnerDiv = document.createElement("div");
                             winnerDiv.setAttribute("class", "winnerText")
                             const wintext = document.createTextNode(winner + " wins!");
@@ -166,6 +166,8 @@ const Game = (() =>  {
             let gamePanel = document.querySelector(".game_panel");
             if (gamePanel) {
                 body.removeChild(gamePanel);
+                const winnerDiv = document.querySelector(".winnerText");
+                winnerDiv && body.removeChild(winnerDiv);
             }
             gamePanel = document.createElement("div");
             gamePanel.setAttribute('class', 'game_panel');
